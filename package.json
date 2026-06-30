@@ -5,16 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "node test-hidden-tab.mjs"
   },
   "dependencies": {
     "next": "15.3.4",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react": "19.3.0-canary-92f4fda3-20260629",
+    "react-dom": "19.3.0-canary-92f4fda3-20260629"
   },
   "devDependencies": {
-    "@types/node": "26.0.1",
-    "@types/react": "19.2.17",
-    "typescript": "6.0.3"
+    "playwright": "^1.51.1"
   }
 }

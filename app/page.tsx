@@ -1,46 +1,38 @@
 import { Suspense } from 'react'
 export const dynamic = 'force-dynamic'
-import SlowData from './slow-content'
+
+async function SlowData() {
+  await new Promise((resolve) => setTimeout(resolve, 3000))
+  return (
+    <div id="revealed" style={{
+      background: '#d4edda',
+      border: '1px solid #28a745',
+      borderRadius: '4px',
+      padding: '1rem',
+      marginTop: '1rem'
+    }}>
+      <strong>✅ Suspense boundary revealed!</strong>
+      <br />Loaded at: {new Date().toISOString()}
+    </div>
+  )
+}
 
 export default function Home() {
   return (
-    <main>
+    <main style={{ fontFamily: 'monospace', padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
       <h1>react#36741 — Hidden-tab Suspense reveal bug</h1>
-      
-      <h2>How to reproduce</h2>
-      <ol>
-        <li>Middle-click this link (or right-click → Open in New Tab) <strong>without switching to the new tab</strong></li>
-        <li>Wait ~5 seconds while staying on another tab</li>
-        <li>Switch back to this tab</li>
-      </ol>
-
-      <h2>Expected</h2>
-      <p>The green box below should appear when you switch to the tab (content was streamed in the background).</p>
-
-      <h2>Actual (without fix)</h2>
-      <p>The green box never appears — the Suspense boundary stays in "pending" state forever because <code>requestAnimationFrame</code> never fires in hidden tabs, and <code>$RT</code> is never initialized, so <code>completeBoundary</code> never schedules the reveal.</p>
-
-      <hr />
-
       <Suspense fallback={
-        <div style={{ 
-          background: '#fff3cd', 
-          border: '1px solid #ffc107', 
-          borderRadius: '4px', 
+        <div id="fallback" style={{
+          background: '#fff3cd',
+          border: '1px solid #ffc107',
           padding: '1rem',
           marginTop: '1rem'
         }}>
-          ⏳ Loading… (3-second delay simulates slow server data)
+          ⏳ Loading… (3-second delay)
         </div>
       }>
         <SlowData />
       </Suspense>
-
-      <hr style={{ marginTop: '2rem' }} />
-      <small>
-        Fix: <a href="https://github.com/react/react/pull/36751">facebook/react#36751</a> — 
-        initialise <code>$RT</code> synchronously when tab is hidden and via <code>visibilitychange</code> fallback
-      </small>
     </main>
   )
 }
