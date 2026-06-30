@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+export const dynamic = 'force-dynamic'
 import SlowData from './slow-content'
 
 export default function Home() {
